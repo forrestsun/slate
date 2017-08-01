@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta content="IE=edge,chrome=1" http-equiv="X-UA-Compatible">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <title>API Reference</title>
+    <title>API 指南</title>
 
     <style>
       .highlight table td { padding: 5px; }
@@ -201,7 +201,7 @@
       <script src="javascripts/all.js"></script>
   </head>
 
-  <body class="index" data-languages="[&quot;shell&quot;,&quot;ruby&quot;,&quot;python&quot;,&quot;javascript&quot;]">
+  <body class="index" data-languages="[&quot;shell&quot;]">
     <a href="#" id="nav-button">
       <span>
         NAV
@@ -212,9 +212,6 @@
       <img src="images/logo.png" class="logo" alt="Logo" />
         <div class="lang-selector">
               <a href="#" data-language-name="shell">shell</a>
-              <a href="#" data-language-name="ruby">ruby</a>
-              <a href="#" data-language-name="python">python</a>
-              <a href="#" data-language-name="javascript">javascript</a>
         </div>
         <div class="search">
           <input type="text" class="search" id="input-search" placeholder="Search">
@@ -222,22 +219,36 @@
         <ul class="search-results"></ul>
       <div id="toc" class="toc-list-h1">
           <li>
-            <a href="#introduction" class="toc-h1 toc-link" data-title="Introduction">Introduction</a>
+            <a href="#resservice" class="toc-h1 toc-link" data-title="resservice 简介">resservice 简介</a>
           </li>
           <li>
-            <a href="#authentication" class="toc-h1 toc-link" data-title="Authentication">Authentication</a>
+            <a href="#" class="toc-h1 toc-link" data-title="安装环境">安装环境</a>
           </li>
           <li>
-            <a href="#kittens" class="toc-h1 toc-link" data-title="Kittens">Kittens</a>
+            <a href="#-2" class="toc-h1 toc-link" data-title="程序目录">程序目录</a>
+          </li>
+          <li>
+            <a href="#-3" class="toc-h1 toc-link" data-title="启动">启动</a>
+          </li>
+          <li>
+            <a href="#-4" class="toc-h1 toc-link" data-title="配置文件">配置文件</a>
+          </li>
+          <li>
+            <a href="#-5" class="toc-h1 toc-link" data-title="接口访问">接口访问</a>
+          </li>
+          <li>
+            <a href="#login" class="toc-h1 toc-link" data-title="Login">Login</a>
               <ul class="toc-list-h2">
                   <li>
-                    <a href="#get-all-kittens" class="toc-h2 toc-link" data-title="Kittens">Get All Kittens</a>
+                    <a href="#3" class="toc-h2 toc-link" data-title="Login">登录方式有3种：</a>
                   </li>
+              </ul>
+          </li>
+          <li>
+            <a href="#users" class="toc-h1 toc-link" data-title="Users">Users</a>
+              <ul class="toc-list-h2">
                   <li>
-                    <a href="#get-a-specific-kitten" class="toc-h2 toc-link" data-title="Kittens">Get a Specific Kitten</a>
-                  </li>
-                  <li>
-                    <a href="#delete-a-specific-kitten" class="toc-h2 toc-link" data-title="Kittens">Delete a Specific Kitten</a>
+                    <a href="#-12" class="toc-h2 toc-link" data-title="Users">用户信息存储操作服务</a>
                   </li>
               </ul>
           </li>
@@ -246,190 +257,778 @@
           </li>
       </div>
         <ul class="toc-footer">
-            <li><a href='#'>Sign Up for a Developer Key</a></li>
-            <li><a href='https://github.com/tripit/slate'>Documentation Powered by Slate</a></li>
+            <li><a href='#'>Sign Up BugReport</a></li>
+            <li><a href='https://www.sunsl.net'>Documentation Powered by sunsl</a></li>
         </ul>
     </div>
     <div class="page-wrapper">
       <div class="dark-box"></div>
       <div class="content">
-        <h1 id='introduction'>Introduction</h1>
-<p>Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.</p>
+        <h1 id='resservice'>resservice 简介</h1>
+<p>resservice采用Restful形式提供友好接口。利用Swagger提供在线实时测试。</p>
+<h1 id=''>安装环境</h1>
+<ul>
+<li>Linux windows Mac ARM </li>
+<li>&gt;= mongodb 2.3</li>
+<li>redis</li>
+</ul>
+<h1 id='-2'>程序目录</h1><pre class="highlight shell tab-shell"><code><span class="gp">$:~/resservice$ </span>tree -L 1
+.
+├── conf
+├── dist
+├── logs
+├── resservice
+</code></pre>
+<p>conf: 目录存储配置文件</p>
 
-<p>We have language bindings in Shell, Ruby, and Python! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.</p>
+<p>dist: 为接口文档及测试服务前端页面</p>
 
-<p>This example API documentation page was created with <a href="https://github.com/tripit/slate">Slate</a>. Feel free to edit it and use it as a base for your own API&#39;s documentation.</p>
-<h1 id='authentication'>Authentication</h1>
+<p>logs: 程序产生日志文件</p>
+
+<p>resservice: 程序文件</p>
+<h1 id='-3'>启动</h1>
 <blockquote>
-<p>To authorize, use this code:</p>
+<p>进入程序根目录运行：</p>
 </blockquote>
-<pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
+<pre class="highlight shell tab-shell"><code>./resservice
+Info <span class="o">[</span>ResService] 服务启动...
+Info <span class="o">======================================</span>
+Info <span class="o">[</span>ResService] 系统版本:0.6.6.7
+Info <span class="o">======================================</span>
+<span class="o">[</span>restful] 2017/07/31 22:47:25 log.go:33: <span class="o">[</span>restful/swagger] listing is available at http://localhost:8000/apidocs.json
+<span class="o">[</span>restful] 2017/07/31 22:47:25 log.go:33: <span class="o">[</span>restful/swagger] http://localhost:8000/apidocs/ is mapped to folder ./dist
+Info <span class="o">[</span>ResService] 服务准备就绪,访问地址: http://localhost:8000
 
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-</code></pre><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">kittn</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-</code></pre><pre class="highlight shell tab-shell"><code><span class="c"># With shell, you can just pass the correct header with each request</span>
-curl <span class="s2">"api_endpoint_here"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">kittn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'kittn'</span><span class="p">);</span>
-
-<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">kittn</span><span class="p">.</span><span class="nx">authorize</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">);</span>
+</code></pre><pre class="highlight go tab-go"><code></code></pre>
+<p>shell进入程序目录进行启动。程序默认访问localhost的8000端口，可通过对程序所在conf目录下的app.conf进行配置。</p>
+<h1 id='-4'>配置文件</h1>
+<blockquote>
+<p>数据库设置</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>mongo.connection<span class="o">=</span>localhost:27017
+mongo.database<span class="o">=</span>resdb
+<span class="c">#正式环境强烈建议对mongodb进行权限设置！！！</span>
+mongo.user<span class="o">=</span>   
+mongo.pwd<span class="o">=</span>
 </code></pre>
 <blockquote>
-<p>Make sure to replace <code>meowmeowmeow</code> with your API key.</p>
+<p>服务地址设置</p>
 </blockquote>
+<pre class="highlight shell tab-shell"><code>http.server.host<span class="o">=</span>localhost
+http.server.port<span class="o">=</span>8000
+</code></pre>
+<blockquote>
+<p>接口文档及测试地址设置</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>apiviews.url<span class="o">=</span>localhost:8000
+apiviews.home<span class="o">=</span>./dist
+apiviews.path<span class="o">=</span>/apidocs/
+</code></pre>
+<blockquote>
+<p>存储设置</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>store.endpoint<span class="o">=</span>localhost:9000
+store.accesskey<span class="o">=</span>
+store.secretkey<span class="o">=</span>
+store.location<span class="o">=</span>
+</code></pre>
+<blockquote>
+<p>接口安全校验设置</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>jwt.type<span class="o">=</span>second
+jwt.duration<span class="o">=</span>60
+jwt.key<span class="o">=</span>111111
 
-<p>Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our <a href="http://example.com/developers">developer portal</a>.</p>
+</code></pre>
+<p>配置文件分为以下几部分：</p>
 
-<p>Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:</p>
-
-<p><code>Authorization: meowmeowmeow</code></p>
+<ul>
+<li>数据库设置
+mongodb及redis数据配置信息</li>
+<li>服务地址设置
+第三方程序可调用接口的地址</li>
+<li>接口文档及测试地址设置
+接口文档呈现地址</li>
+<li>存储设置
+文件存储服务配置信息</li>
+<li>接口安全校验设置
+接口访问权限所需加密信息</li>
+</ul>
+<h1 id='-5'>接口访问</h1>
+<p>可直接通过浏览器进行访问网址进行实时测试。
+接口地址可以程序启动信息中查看，默认地址为： http://localhost:8000/apidocs</p>
 
 <aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
+建议采用chrome或firefox最新版本进行查看
 </aside>
-<h1 id='kittens'>Kittens</h1><h2 id='get-all-kittens'>Get All Kittens</h2><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
+<h1 id='login'>Login</h1><h2 id='3'>登录方式有3种：</h2>
+<p>通过登录获取token进行其它接口服务操作</p>
 
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">get</span>
-</code></pre><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">kittn</span>
+<blockquote>
+<p>用户名登录代码:</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code><span class="c">#反馈JSON结果</span>
+curl -X GET --header <span class="s1">'Accept: application/json'</span> 
+<span class="s1">'http://localhost:8000/login/account?username=$username&amp;password=$passwd'</span>
 
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="o">.</span><span class="n">kittens</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
-</code></pre><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://example.com/api/kittens"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">kittn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'kittn'</span><span class="p">);</span>
+<span class="c">#反馈XML结果</span>
+curl -X GET --header <span class="s1">'Accept: application/xml'</span> 
+<span class="s1">'http://localhost:8000/login/account?username=$username&amp;password=$passwd'</span>
 
-<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">kittn</span><span class="p">.</span><span class="nx">authorize</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">);</span>
-<span class="kd">let</span> <span class="nx">kittens</span> <span class="o">=</span> <span class="nx">api</span><span class="p">.</span><span class="nx">kittens</span><span class="p">.</span><span class="nx">get</span><span class="p">();</span>
 </code></pre>
 <blockquote>
-<p>The above command returns JSON structured like this:</p>
+<p>邮箱登录代码:</p>
 </blockquote>
-<pre class="highlight json tab-json"><code><span class="p">[</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Fluffums"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"calico"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">6</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">7</span><span class="w">
-  </span><span class="p">},</span><span class="w">
-  </span><span class="p">{</span><span class="w">
-    </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Max"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unknown"</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
-    </span><span class="s2">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
-  </span><span class="p">}</span><span class="w">
-</span><span class="p">]</span><span class="w">
+<pre class="highlight shell tab-shell"><code><span class="c">#反馈JSON结果</span>
+curl -X GET --header <span class="s1">'Accept: application/json'</span>
+<span class="s1">'http://localhost:8000/login/email?email=$eamil&amp;password=$passwd'</span>
+
+<span class="c">#反馈XML结果</span>
+curl -X GET --header <span class="s1">'Accept: application/xml'</span> 
+<span class="s1">'http://localhost:8000/login/email?email=$eamil&amp;password=$passwd'</span>
+</code></pre>
+<blockquote>
+<p>手机号登录代码:</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code><span class="c">#反馈JSON结果</span>
+curl -X GET --header <span class="s1">'Accept: application/json'</span>
+<span class="s1">'http://localhost:8000/login/telphone?telphone=$telphone&amp;password=$passwd'</span>
+
+<span class="c">#反馈XML结果</span>
+curl -X GET --header <span class="s1">'Accept: application/xml'</span> 
+<span class="s1">'http://localhost:8000/login/telphone?telphone=$telphone&amp;password=$passwd'</span>
+</code></pre>
+<blockquote>
+<p>三种登录方式在成功登录后反馈以下JSON结果:</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"Id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"UserName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"Role"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"Group"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="s2">"string"</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="s2">"Thumbnail"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"token"</span><span class="p">:</span><span class="w"> </span><span class="s2">"string"</span><span class="w">
+</span><span class="p">}</span><span class="w">
 </span></code></pre>
-<p>This endpoint retrieves all kittens.</p>
-<h3 id='http-request'>HTTP Request</h3>
-<p><code>GET http://example.com/api/kittens</code></p>
-<h3 id='query-parameters'>Query Parameters</h3>
+<blockquote>
+<p>可根据需求反馈XML结果:</p>
+</blockquote>
+<pre class="highlight xml tab-xml"><code><span class="cp">&lt;?xml version="1.0"?&gt;</span>
+<span class="nt">&lt;model.AuthUserInfo&gt;</span>
+  <span class="nt">&lt;Id&gt;</span>string<span class="nt">&lt;/Id&gt;</span>
+  <span class="nt">&lt;UserName&gt;</span>string<span class="nt">&lt;/UserName&gt;</span>
+  <span class="nt">&lt;Role&gt;</span>string<span class="nt">&lt;/Role&gt;</span>
+  <span class="nt">&lt;Group&gt;</span>string<span class="nt">&lt;/Group&gt;</span>
+  <span class="nt">&lt;Thumbnail&gt;</span>string<span class="nt">&lt;/Thumbnail&gt;</span>
+  <span class="nt">&lt;token&gt;</span>string<span class="nt">&lt;/token&gt;</span>
+<span class="nt">&lt;/model.AuthUserInfo&gt;</span>
+</code></pre><h3 id='-6'>通过用户名/密码登录</h3>
+<aside class="notice">
+程序初始化时会产生一个默认的管理员账号：admin 密码：12345678 用于初始登录
+</aside>
+
+<p><code>GET /login/account</code></p>
+<h3 id='-7'>参数</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
-<th>Default</th>
 <th>Description</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>include_cats</td>
-<td>false</td>
-<td>If set to true, the result will also include cats.</td>
+<td>username</td>
+<td>用户注册名称.</td>
 </tr>
 <tr>
-<td>available</td>
-<td>true</td>
-<td>If set to false, the result will include kittens that have already been adopted.</td>
+<td>password</td>
+<td>密码.</td>
+</tr>
+</tbody></table>
+<h3 id='-8'>通过邮箱/密码登录</h3>
+<p><code>GET /login/email</code></p>
+<h3 id='-9'>参数</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>emal</td>
+<td>用户注册邮箱.</td>
+</tr>
+<tr>
+<td>password</td>
+<td>密码.</td>
+</tr>
+</tbody></table>
+<h3 id='-10'>通过手机号/密码登录</h3>
+<p><code>GET /login/telphone</code></p>
+<h3 id='-11'>参数</h3>
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Description</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>telphone</td>
+<td>用户注册手机号.</td>
+</tr>
+<tr>
+<td>password</td>
+<td>密码.</td>
 </tr>
 </tbody></table>
 
 <aside class="success">
-Remember — a happy kitten is an authenticated kitten!
+必须先进行登录操作以获取到token，否则其它服务将不允许使用！！！
 </aside>
-<h2 id='get-a-specific-kitten'>Get a Specific Kitten</h2><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">get</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">kittn</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="o">.</span><span class="n">kittens</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://example.com/api/kittens/2"</span>
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">kittn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'kittn'</span><span class="p">);</span>
-
-<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">kittn</span><span class="p">.</span><span class="nx">authorize</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">);</span>
-<span class="kd">let</span> <span class="nx">max</span> <span class="o">=</span> <span class="nx">api</span><span class="p">.</span><span class="nx">kittens</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
+<h1 id='users'>Users</h1><h2 id='-12'>用户信息存储操作服务</h2>
+<blockquote>
+<p>users_valid</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl -X GET --header <span class="s1">'Accept: application/json'</span> 
+<span class="s1">'http://localhost:8000/users/users_valid?token=1&amp;skip=1&amp;limit=1'</span>
 </code></pre>
 <blockquote>
-<p>The above command returns JSON structured like this:</p>
+<p>users_invalid</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl -X GET --header <span class="s1">'Accept: application/json'</span> 
+<span class="s1">'http://localhost:8000/users/users_invalid?token=1&amp;skip=1&amp;limit=1'</span>
+
+</code></pre>
+<blockquote>
+<p>name</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl -X GET --header <span class="s1">'Accept: application/json'</span>
+ <span class="s1">'http://localhost:8000/users/name?token=1&amp;username=1&amp;skip=1&amp;limit=1'</span>
+</code></pre>
+<blockquote>
+<p>user_id</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl -X GET --header <span class="s1">'Accept: text/plain'</span> 
+<span class="s1">'http://localhost:8000/users/user_id?token=1&amp;user_id=1'</span>
+
+</code></pre>
+<blockquote>
+<p>user_ids</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl -X GET --header <span class="s1">'Accept: application/json'</span> 
+<span class="s1">'http://localhost:8000/users/user_ids?token=1&amp;skip=1&amp;limit=1&amp;user_id=1'</span>
+</code></pre>
+<blockquote>
+<p>update</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl -X POST --header <span class="s1">'Content-Type: application/json'</span> <span class="se">\</span>
+--header <span class="s1">'Accept: text/plain'</span> -d <span class="s1">'{ \ 
+   "Id": "string", \ 
+   "RealName": "string", \ 
+   "UserName": "string", \ 
+   "Role": "string", \ 
+   "Groups": [ \ 
+     "string" \ 
+   ], \ 
+   "Email": "string", \ 
+   "Phone": "string", \ 
+   "TelPhone": "string", \ 
+   "Thumbnail": "string", \ 
+   "Profession": "string", \ 
+   "Gender": "string", \ 
+   "Enable": true, \ 
+   "Province": "string", \ 
+   "City": "string", \ 
+   "Institute": "string", \ 
+   "Specialty": "string", \ 
+   "Comment": "string", \ 
+   "CreateTime": "2017-08-01T11:58:30.361Z", \ 
+   "UpdateTime": "2017-08-01T11:58:30.361Z" \ 
+ }'</span> <span class="s1">'http://localhost:8000/users/update?token=1'</span>
+</code></pre>
+<blockquote>
+<p>set_user_isvalid</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl -X POST --header <span class="s1">'Content-Type: application/json'</span> 
+--header <span class="s1">'Accept: application/json'</span> 
+<span class="s1">'http://localhost:8000/users/set_user_isvalid?token=1&amp;user_id=1&amp;is_valid=1'</span>
+</code></pre>
+<blockquote>
+<p>changepwd</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl -X POST --header <span class="s1">'Content-Type: application/json'</span> 
+--header <span class="s1">'Accept: text/plain'</span> 
+<span class="s1">'http://localhost:8000/users/changepwd?token=1&amp;user_id=1&amp;old_pwd=1&amp;new_pwd=1'</span>
+</code></pre>
+<blockquote>
+<p>create</p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl -X PUT --header <span class="s1">'Content-Type: application/json'</span> <span class="se">\</span>
+--header <span class="s1">'Accept: text/plain'</span> -d <span class="s1">'{ \ 
+   "Id": "string", \ 
+   "RealName": "string", \ 
+   "UserName": "string", \ 
+   "Role": "string", \ 
+   "Groups": [ \ 
+     "string" \ 
+   ], \ 
+   "Email": "string", \ 
+   "Phone": "string", \ 
+   "TelPhone": "string", \ 
+   "Thumbnail": "string", \ 
+   "Profession": "string", \ 
+   "Gender": "string", \ 
+   "Enable": true, \ 
+   "Province": "string", \ 
+   "City": "string", \ 
+   "Institute": "string", \ 
+   "Specialty": "string", \ 
+   "Comment": "string", \ 
+   "CreateTime": "2017-08-01T11:58:30.370Z", \ 
+   "UpdateTime": "2017-08-01T11:58:30.370Z" \ 
+ }'</span> <span class="s1">'http://localhost:8000/users/create?token=1'</span>
+</code></pre>
+<blockquote>
+<p>delete </p>
+</blockquote>
+<pre class="highlight shell tab-shell"><code>curl -X DELETE --header <span class="s1">'Accept: application/json'</span> 
+<span class="s1">'http://localhost:8000/users/delete?token=1&amp;user_id=1'</span>
+</code></pre>
+<blockquote>
+<p>单个用户反馈结构</p>
 </blockquote>
 <pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Max"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"breed"</span><span class="p">:</span><span class="w"> </span><span class="s2">"unknown"</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"fluffiness"</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"cuteness"</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="w">
+  </span><span class="s2">"Id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4c1b304240d29695808a3d064be7fc49"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"RealName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ssl"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"UserName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sunsl"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"Role"</span><span class="p">:</span><span class="w"> </span><span class="s2">"admin"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"Groups"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+  </span><span class="s2">"Email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"admin@live.com"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"Phone"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"TelPhone"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"Thumbnail"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"Profession"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"Gender"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"Enable"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"Province"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"City"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"Institute"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"Specialty"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"Comment"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"CreateTime"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-07-28T10:14:10.749+08:00"</span><span class="p">,</span><span class="w">
+  </span><span class="s2">"UpdateTime"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-07-28T10:14:10.76+08:00"</span><span class="w">
 </span><span class="p">}</span><span class="w">
-</span></code></pre>
-<p>This endpoint retrieves a specific kitten.</p>
+</span></code></pre><pre class="highlight xml tab-xml"><code><span class="cp">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
+ <span class="nt">&lt;User&gt;</span>
+    <span class="nt">&lt;Id&gt;</span>4c1b304240d29695808a3d064be7fc49<span class="nt">&lt;/Id&gt;</span>
+    <span class="nt">&lt;RealName&gt;</span>ssl<span class="nt">&lt;/RealName&gt;</span>
+    <span class="nt">&lt;UserName&gt;</span>sunsl<span class="nt">&lt;/UserName&gt;</span>
+    <span class="nt">&lt;PassWord&gt;</span>7c4a8d09ca3762af61e59520943dc26494f8941b<span class="nt">&lt;/PassWord&gt;</span>
+    <span class="nt">&lt;Role&gt;</span>admin<span class="nt">&lt;/Role&gt;</span>
+    <span class="nt">&lt;Email&gt;</span>sunsl@crtvu.edu.cn<span class="nt">&lt;/Email&gt;</span>
+    <span class="nt">&lt;Phone&gt;&lt;/Phone&gt;</span>
+    <span class="nt">&lt;TelPhone&gt;&lt;/TelPhone&gt;</span>
+    <span class="nt">&lt;Thumbnail&gt;&lt;/Thumbnail&gt;</span>
+    <span class="nt">&lt;Profession&gt;&lt;/Profession&gt;</span>
+    <span class="nt">&lt;Gender&gt;&lt;/Gender&gt;</span>
+    <span class="nt">&lt;SecretKey&gt;</span>a3cbda8c404f3ae48031f0070ea0644b<span class="nt">&lt;/SecretKey&gt;</span>
+    <span class="nt">&lt;Enable&gt;</span>true<span class="nt">&lt;/Enable&gt;</span>
+    <span class="nt">&lt;Province&gt;&lt;/Province&gt;</span>
+    <span class="nt">&lt;City&gt;&lt;/City&gt;</span>
+    <span class="nt">&lt;Institute&gt;&lt;/Institute&gt;</span>
+    <span class="nt">&lt;Specialty&gt;&lt;/Specialty&gt;</span>
+    <span class="nt">&lt;Comment&gt;&lt;/Comment&gt;</span>
+    <span class="nt">&lt;CreateTime&gt;</span>2017-07-28T10:14:10.749+08:00<span class="nt">&lt;/CreateTime&gt;</span>
+    <span class="nt">&lt;UpdateTime&gt;</span>2017-07-28T10:14:10.76+08:00<span class="nt">&lt;/UpdateTime&gt;</span>
+ <span class="nt">&lt;/User&gt;</span>
+</code></pre>
+<blockquote>
+<p>用户列表反馈结构：</p>
+</blockquote>
+<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
+  </span><span class="s2">"User"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">  </span><span class="err">&lt;-用户结构数组</span><span class="w">
+    </span><span class="p">{</span><span class="w">
+      </span><span class="s2">"Id"</span><span class="p">:</span><span class="w"> </span><span class="s2">"4c1b304240d29695808a3d064be7fc49"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"RealName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"ssl"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"UserName"</span><span class="p">:</span><span class="w"> </span><span class="s2">"sunsl"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"Role"</span><span class="p">:</span><span class="w"> </span><span class="s2">"admin"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"Groups"</span><span class="p">:</span><span class="w"> </span><span class="p">[],</span><span class="w">
+      </span><span class="s2">"Email"</span><span class="p">:</span><span class="w"> </span><span class="s2">"admin@live.com"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"Phone"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"TelPhone"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"Thumbnail"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"Profession"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"Gender"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"Enable"</span><span class="p">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="err">&lt;-是否有效</span><span class="w">
+      </span><span class="s2">"Province"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"City"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"Institute"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"Specialty"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"Comment"</span><span class="p">:</span><span class="w"> </span><span class="s2">""</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"CreateTime"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-07-28T10:14:10.749+08:00"</span><span class="p">,</span><span class="w">
+      </span><span class="s2">"UpdateTime"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2017-07-28T10:14:10.76+08:00"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+  </span><span class="s2">"RecordCount"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="err">#数据集中用户数量</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre><pre class="highlight xml tab-xml"><code><span class="cp">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
+ <span class="nt">&lt;Users&gt;</span>
+    <span class="nt">&lt;User&gt;</span>
+       <span class="nt">&lt;Id&gt;</span>4c1b304240d29695808a3d064be7fc49<span class="nt">&lt;/Id&gt;</span>
+       <span class="nt">&lt;RealName&gt;</span>ssl<span class="nt">&lt;/RealName&gt;</span>
+       <span class="nt">&lt;UserName&gt;</span>sunsl<span class="nt">&lt;/UserName&gt;</span>
+       <span class="nt">&lt;PassWord&gt;</span>7c4a8d09ca3762af61e59520943dc26494f8941b<span class="nt">&lt;/PassWord&gt;</span>
+       <span class="nt">&lt;Role&gt;</span>admin<span class="nt">&lt;/Role&gt;</span>
+       <span class="nt">&lt;Email&gt;</span>sunsl@crtvu.edu.cn<span class="nt">&lt;/Email&gt;</span>
+       <span class="nt">&lt;Phone&gt;&lt;/Phone&gt;</span>
+       <span class="nt">&lt;TelPhone&gt;&lt;/TelPhone&gt;</span>
+       <span class="nt">&lt;Thumbnail&gt;&lt;/Thumbnail&gt;</span>
+       <span class="nt">&lt;Profession&gt;&lt;/Profession&gt;</span>
+       <span class="nt">&lt;Gender&gt;&lt;/Gender&gt;</span>
+       <span class="nt">&lt;SecretKey&gt;</span>a3cbda8c404f3ae48031f0070ea0644b<span class="nt">&lt;/SecretKey&gt;</span>
+       <span class="nt">&lt;Enable&gt;</span>true<span class="nt">&lt;/Enable&gt;</span>
+       <span class="nt">&lt;Province&gt;&lt;/Province&gt;</span>
+       <span class="nt">&lt;City&gt;&lt;/City&gt;</span>
+       <span class="nt">&lt;Institute&gt;&lt;/Institute&gt;</span>
+       <span class="nt">&lt;Specialty&gt;&lt;/Specialty&gt;</span>
+       <span class="nt">&lt;Comment&gt;&lt;/Comment&gt;</span>
+       <span class="nt">&lt;CreateTime&gt;</span>2017-07-28T10:14:10.749+08:00<span class="nt">&lt;/CreateTime&gt;</span>
+       <span class="nt">&lt;UpdateTime&gt;</span>2017-07-28T10:14:10.76+08:00<span class="nt">&lt;/UpdateTime&gt;</span>
+    <span class="nt">&lt;/User&gt;</span>
+    <span class="nt">&lt;RecordCount&gt;</span>1<span class="nt">&lt;/RecordCount&gt;</span>
+ <span class="nt">&lt;/Users&gt;</span>
+</code></pre><h3 id='-13'>获取所有用户信息(审核通过用户)</h3><h3 id='http-request'>HTTP Request</h3>
+<p><code>GET /users/users_valid</code></p>
 
-<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
-<h3 id='http-request-2'>HTTP Request</h3>
-<p><code>GET http://example.com/kittens/&lt;ID&gt;</code></p>
-<h3 id='url-parameters'>URL Parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
+<th>Value</th>
 <th>Description</th>
+<th>ParameterType</th>
+<th>DataType</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>ID</td>
-<td>The ID of the kitten to retrieve</td>
+<td>token</td>
+<td>不可为空</td>
+<td>token</td>
+<td>query</td>
+<td>string</td>
+</tr>
+<tr>
+<td>skip</td>
+<td>可为空（默认为0）</td>
+<td>页码</td>
+<td>query</td>
+<td>string</td>
+</tr>
+<tr>
+<td>limit</td>
+<td>可为空 （默认为10）</td>
+<td>每页显示行数</td>
+<td>query</td>
+<td>string</td>
 </tr>
 </tbody></table>
-<h2 id='delete-a-specific-kitten'>Delete a Specific Kitten</h2><pre class="highlight ruby tab-ruby"><code><span class="nb">require</span> <span class="s1">'kittn'</span>
+<h3 id='-14'>获取所有用户信息（包含未审核通过用户）</h3><h3 id='http-request-2'>HTTP Request</h3>
+<p><code>GET /users/users_invalid</code></p>
 
-<span class="n">api</span> <span class="o">=</span> <span class="no">Kittn</span><span class="o">::</span><span class="no">APIClient</span><span class="p">.</span><span class="nf">authorize!</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="p">.</span><span class="nf">kittens</span><span class="p">.</span><span class="nf">delete</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre><pre class="highlight python tab-python"><code><span class="kn">import</span> <span class="nn">kittn</span>
-
-<span class="n">api</span> <span class="o">=</span> <span class="n">kittn</span><span class="o">.</span><span class="n">authorize</span><span class="p">(</span><span class="s">'meowmeowmeow'</span><span class="p">)</span>
-<span class="n">api</span><span class="o">.</span><span class="n">kittens</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-</code></pre><pre class="highlight shell tab-shell"><code>curl <span class="s2">"http://example.com/api/kittens/2"</span>
-  -X DELETE
-  -H <span class="s2">"Authorization: meowmeowmeow"</span>
-</code></pre><pre class="highlight javascript tab-javascript"><code><span class="kr">const</span> <span class="nx">kittn</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">'kittn'</span><span class="p">);</span>
-
-<span class="kd">let</span> <span class="nx">api</span> <span class="o">=</span> <span class="nx">kittn</span><span class="p">.</span><span class="nx">authorize</span><span class="p">(</span><span class="s1">'meowmeowmeow'</span><span class="p">);</span>
-<span class="kd">let</span> <span class="nx">max</span> <span class="o">=</span> <span class="nx">api</span><span class="p">.</span><span class="nx">kittens</span><span class="p">.</span><span class="k">delete</span><span class="p">(</span><span class="mi">2</span><span class="p">);</span>
-</code></pre>
-<blockquote>
-<p>The above command returns JSON structured like this:</p>
-</blockquote>
-<pre class="highlight json tab-json"><code><span class="p">{</span><span class="w">
-  </span><span class="s2">"id"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
-  </span><span class="s2">"deleted"</span><span class="w"> </span><span class="p">:</span><span class="w"> </span><span class="s2">":("</span><span class="w">
-</span><span class="p">}</span><span class="w">
-</span></code></pre>
-<p>This endpoint retrieves a specific kitten.</p>
-<h3 id='http-request-3'>HTTP Request</h3>
-<p><code>DELETE http://example.com/kittens/&lt;ID&gt;</code></p>
-<h3 id='url-parameters-2'>URL Parameters</h3>
 <table><thead>
 <tr>
 <th>Parameter</th>
+<th>Value</th>
 <th>Description</th>
+<th>ParameterType</th>
+<th>DataType</th>
 </tr>
 </thead><tbody>
 <tr>
-<td>ID</td>
-<td>The ID of the kitten to delete</td>
+<td>token</td>
+<td>不可为空</td>
+<td>token</td>
+<td>query</td>
+<td>string</td>
+</tr>
+<tr>
+<td>skip</td>
+<td>可为空（默认为0）</td>
+<td>页码</td>
+<td>query</td>
+<td>string</td>
+</tr>
+<tr>
+<td>limit</td>
+<td>可为空 （默认为10）</td>
+<td>每页显示行数</td>
+<td>query</td>
+<td>string</td>
+</tr>
+</tbody></table>
+<h3 id='-15'>用户名模糊查询</h3><h3 id='http-request-3'>HTTP Request</h3>
+<p><code>GET /users/name</code></p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Value</th>
+<th>Description</th>
+<th>ParameterType</th>
+<th>DataType</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>token</td>
+<td>不可为空</td>
+<td>token</td>
+<td>query</td>
+<td>string</td>
+</tr>
+<tr>
+<td>username</td>
+<td>不可为空</td>
+<td>用户名</td>
+<td>query</td>
+<td>string</td>
+</tr>
+<tr>
+<td>skip</td>
+<td>可为空（默认为0）</td>
+<td>页码</td>
+<td>query</td>
+<td>string</td>
+</tr>
+<tr>
+<td>limit</td>
+<td>可为空 （默认为10）</td>
+<td>每页显示行数</td>
+<td>query</td>
+<td>string</td>
+</tr>
+</tbody></table>
+<h3 id='-16'>获取指定用户信息</h3><h3 id='http-request-4'>HTTP Request</h3>
+<p><code>GET /users/user_id</code></p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Value</th>
+<th>Description</th>
+<th>ParameterType</th>
+<th>DataType</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>token</td>
+<td>不可为空</td>
+<td>token</td>
+<td>query</td>
+<td>string</td>
+</tr>
+<tr>
+<td>user_id</td>
+<td>不可为空</td>
+<td>用户编码</td>
+<td>query</td>
+<td>string</td>
+</tr>
+</tbody></table>
+<h3 id='-17'>获取用户信息</h3><h3 id='http-request-5'>HTTP Request</h3>
+<p><code>GET /users/user_ids</code></p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Value</th>
+<th>Description</th>
+<th>ParameterType</th>
+<th>DataType</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>token</td>
+<td>不可为空</td>
+<td>token</td>
+<td>query</td>
+<td>string</td>
+</tr>
+<tr>
+<td>user_ids</td>
+<td>不可为空</td>
+<td>用户编码组(用户id以&#39;,&#39;隔开)</td>
+<td>query</td>
+<td>string</td>
+</tr>
+<tr>
+<td>skip</td>
+<td>可为空（默认为0）</td>
+<td>页码</td>
+<td>query</td>
+<td>string</td>
+</tr>
+<tr>
+<td>limit</td>
+<td>可为空 （默认为10）</td>
+<td>每页显示行数</td>
+<td>query</td>
+<td>string</td>
+</tr>
+</tbody></table>
+<h3 id='-18'>更新用户</h3><h3 id='http-request-6'>HTTP Request</h3>
+<p><code>POST /users/update</code></p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Value</th>
+<th>Description</th>
+<th>ParameterType</th>
+<th>DataType</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>token</td>
+<td>不可为空</td>
+<td>token</td>
+<td>query</td>
+<td>string</td>
+</tr>
+<tr>
+<td>body</td>
+<td>不可为空</td>
+<td>结构体</td>
+<td>body</td>
+<td>model.User</td>
+</tr>
+</tbody></table>
+<h3 id='-19'>用户有效性审核</h3><h3 id='http-request-7'>HTTP Request</h3>
+<p><code>POST /users/set_user_isvalid</code></p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Value</th>
+<th>Description</th>
+<th>ParameterType</th>
+<th>DataType</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>token</td>
+<td>不可为空</td>
+<td>token</td>
+<td>query</td>
+<td>string</td>
+</tr>
+<tr>
+<td>user_id</td>
+<td>不可为空</td>
+<td>用户编码</td>
+<td>query</td>
+<td>string</td>
+</tr>
+<tr>
+<td>is_valid</td>
+<td>0:有效 1:无效</td>
+<td>是否通过审核</td>
+<td>query</td>
+<td>string</td>
+</tr>
+</tbody></table>
+<h3 id='-20'>更新密码</h3><h3 id='http-request-8'>HTTP Request</h3>
+<p><code>POST /users/changepwd</code></p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Value</th>
+<th>Description</th>
+<th>ParameterType</th>
+<th>DataType</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>token</td>
+<td>不可为空</td>
+<td>token</td>
+<td>query</td>
+<td>string</td>
+</tr>
+<tr>
+<td>user_id</td>
+<td>不可为空</td>
+<td>用户编码</td>
+<td>query</td>
+<td>string</td>
+</tr>
+<tr>
+<td>old_pwd</td>
+<td>不可为空</td>
+<td>旧密码（明文）</td>
+<td>query</td>
+<td>string</td>
+</tr>
+<tr>
+<td>new_pwd</td>
+<td>不可为空</td>
+<td>新密码（明文）</td>
+<td>query</td>
+<td>string</td>
+</tr>
+</tbody></table>
+<h3 id='111111'>创建用户,默认用户密码（111111）</h3><h3 id='http-request-9'>HTTP Request</h3>
+<p><code>PUT /users/create</code></p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Value</th>
+<th>Description</th>
+<th>ParameterType</th>
+<th>DataType</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>token</td>
+<td>不可为空</td>
+<td>token</td>
+<td>query</td>
+<td>string</td>
+</tr>
+<tr>
+<td>body</td>
+<td>不可为空</td>
+<td>结构体</td>
+<td>body</td>
+<td>model.User</td>
+</tr>
+</tbody></table>
+<h3 id='-21'>删除用户</h3><h3 id='http-request-10'>HTTP Request</h3>
+<p><code>DELETE /users/delete</code></p>
+
+<table><thead>
+<tr>
+<th>Parameter</th>
+<th>Value</th>
+<th>Description</th>
+<th>ParameterType</th>
+<th>DataType</th>
+</tr>
+</thead><tbody>
+<tr>
+<td>token</td>
+<td>不可为空</td>
+<td>token</td>
+<td>query</td>
+<td>string</td>
+</tr>
+<tr>
+<td>user_id</td>
+<td>不可为空</td>
+<td>用户编码</td>
+<td>query</td>
+<td>string</td>
 </tr>
 </tbody></table>
 <h1 id='errors'>Errors</h1>
@@ -445,35 +1044,35 @@ Remember — a happy kitten is an authenticated kitten!
 </thead><tbody>
 <tr>
 <td>400</td>
-<td>Bad Request -- Your request sucks</td>
+<td>Bad Request -- Your request sucks.</td>
 </tr>
 <tr>
 <td>401</td>
-<td>Unauthorized -- Your API key is wrong</td>
+<td>Unauthorized -- Your API key is wrong.</td>
 </tr>
 <tr>
 <td>403</td>
-<td>Forbidden -- The kitten requested is hidden for administrators only</td>
+<td>Forbidden -- The kitten requested is hidden for administrators only.</td>
 </tr>
 <tr>
 <td>404</td>
-<td>Not Found -- The specified kitten could not be found</td>
+<td>Not Found -- The specified kitten could not be found.</td>
 </tr>
 <tr>
 <td>405</td>
-<td>Method Not Allowed -- You tried to access a kitten with an invalid method</td>
+<td>Method Not Allowed -- You tried to access a kitten with an invalid method.</td>
 </tr>
 <tr>
 <td>406</td>
-<td>Not Acceptable -- You requested a format that isn&#39;t json</td>
+<td>Not Acceptable -- You requested a format that isn&#39;t json.</td>
 </tr>
 <tr>
 <td>410</td>
-<td>Gone -- The kitten requested has been removed from our servers</td>
+<td>Gone -- The kitten requested has been removed from our servers.</td>
 </tr>
 <tr>
 <td>418</td>
-<td>I&#39;m a teapot</td>
+<td>I&#39;m a teapot.</td>
 </tr>
 <tr>
 <td>429</td>
@@ -493,9 +1092,6 @@ Remember — a happy kitten is an authenticated kitten!
       <div class="dark-box">
           <div class="lang-selector">
                 <a href="#" data-language-name="shell">shell</a>
-                <a href="#" data-language-name="ruby">ruby</a>
-                <a href="#" data-language-name="python">python</a>
-                <a href="#" data-language-name="javascript">javascript</a>
           </div>
       </div>
     </div>
