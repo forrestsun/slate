@@ -1,15 +1,12 @@
 ---
-title: API Reference
+title: API 指南
 
 language_tabs: # must be one of https://git.io/vQNgJ
   - shell
-  - ruby
-  - python
-  - javascript
 
 toc_footers:
-  - <a href='#'>Sign Up for a Developer Key</a>
-  - <a href='https://github.com/tripit/slate'>Documentation Powered by Slate</a>
+  - <a href='#'>Sign Up BugReport</a>
+  - <a href='https://www.sunsl.net'>Documentation Powered by sunsl</a>
 
 includes:
   - errors
@@ -17,223 +14,584 @@ includes:
 search: true
 ---
 
-# Introduction
+# resservice 简介
 
-Welcome to the Kittn API! You can use our API to access Kittn API endpoints, which can get information on various cats, kittens, and breeds in our database.
+resservice采用Restful形式提供友好接口。利用Swagger提供在线实时测试。
 
-We have language bindings in Shell, Ruby, and Python! You can view code examples in the dark area to the right, and you can switch the programming language of the examples with the tabs in the top right.
+# 安装环境
 
-This example API documentation page was created with [Slate](https://github.com/tripit/slate). Feel free to edit it and use it as a base for your own API's documentation.
+* Linux windows Mac ARM 
+* >= mongodb 2.3
+* redis
 
-# Authentication
-
-> To authorize, use this code:
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-```
+# 程序目录
 
 ```shell
-# With shell, you can just pass the correct header with each request
-curl "api_endpoint_here"
-  -H "Authorization: meowmeowmeow"
+$:~/resservice$ tree -L 1
+.
+├── conf
+├── dist
+├── logs
+├── resservice
 ```
 
-```javascript
-const kittn = require('kittn');
+conf: 目录存储配置文件
 
-let api = kittn.authorize('meowmeowmeow');
+dist: 为接口文档及测试服务前端页面
+
+logs: 程序产生日志文件
+
+resservice: 程序文件
+
+# 启动
+
+
+> 进入程序根目录运行：
+
+```shell
+./resservice
+Info [ResService] 服务启动...
+Info ======================================
+Info [ResService] 系统版本:0.6.6.7
+Info ======================================
+[restful] 2017/07/31 22:47:25 log.go:33: [restful/swagger] listing is available at http://localhost:8000/apidocs.json
+[restful] 2017/07/31 22:47:25 log.go:33: [restful/swagger] http://localhost:8000/apidocs/ is mapped to folder ./dist
+Info [ResService] 服务准备就绪,访问地址: http://localhost:8000
+
+``` 
+
+```go
+```
+shell进入程序目录进行启动。程序默认访问localhost的8000端口，可通过对程序所在conf目录下的app.conf进行配置。
+
+# 配置文件
+
+> 数据库设置
+
+```shell
+mongo.connection=localhost:27017
+mongo.database=resdb
+#正式环境强烈建议对mongodb进行权限设置！！！
+mongo.user=   
+mongo.pwd=
 ```
 
-> Make sure to replace `meowmeowmeow` with your API key.
 
-Kittn uses API keys to allow access to the API. You can register a new Kittn API key at our [developer portal](http://example.com/developers).
+> 服务地址设置
 
-Kittn expects for the API key to be included in all API requests to the server in a header that looks like the following:
+```shell
+http.server.host=localhost
+http.server.port=8000
+```
 
-`Authorization: meowmeowmeow`
+> 接口文档及测试地址设置
+
+```shell
+apiviews.url=localhost:8000
+apiviews.home=./dist
+apiviews.path=/apidocs/
+```
+
+> 存储设置
+
+```shell
+store.endpoint=localhost:9000
+store.accesskey=
+store.secretkey=
+store.location=
+```
+
+> 接口安全校验设置
+
+```shell
+jwt.type=second
+jwt.duration=60
+jwt.key=111111
+
+```
+
+配置文件分为以下几部分：
+
+* 数据库设置
+  mongodb及redis数据配置信息
+* 服务地址设置
+  第三方程序可调用接口的地址
+* 接口文档及测试地址设置
+  接口文档呈现地址
+* 存储设置
+  文件存储服务配置信息
+* 接口安全校验设置
+  接口访问权限所需加密信息
+
+# 接口访问
+可直接通过浏览器进行访问网址进行实时测试。
+接口地址可以程序启动信息中查看，默认地址为： http://localhost:8000/apidocs
 
 <aside class="notice">
-You must replace <code>meowmeowmeow</code> with your personal API key.
+建议采用chrome或firefox最新版本进行查看
 </aside>
 
-# Kittens
+# Login
+## 登录方式有3种：
+通过登录获取token进行其它接口服务操作
 
-## Get All Kittens
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get
-```
-
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get()
-```
+> 用户名登录代码:
 
 ```shell
-curl "http://example.com/api/kittens"
-  -H "Authorization: meowmeowmeow"
+#反馈JSON结果
+curl -X GET --header 'Accept: application/json' 
+'http://localhost:8000/login/account?username=$username&password=$passwd'
+
+#反馈XML结果
+curl -X GET --header 'Accept: application/xml' 
+'http://localhost:8000/login/account?username=$username&password=$passwd'
+
 ```
 
-```javascript
-const kittn = require('kittn');
+> 邮箱登录代码:
 
-let api = kittn.authorize('meowmeowmeow');
-let kittens = api.kittens.get();
+```shell
+#反馈JSON结果
+curl -X GET --header 'Accept: application/json'
+'http://localhost:8000/login/email?email=$eamil&password=$passwd'
+
+#反馈XML结果
+curl -X GET --header 'Accept: application/xml' 
+'http://localhost:8000/login/email?email=$eamil&password=$passwd'
 ```
 
-> The above command returns JSON structured like this:
+> 手机号登录代码:
+
+```shell
+#反馈JSON结果
+curl -X GET --header 'Accept: application/json'
+'http://localhost:8000/login/telphone?telphone=$telphone&password=$passwd'
+
+#反馈XML结果
+curl -X GET --header 'Accept: application/xml' 
+'http://localhost:8000/login/telphone?telphone=$telphone&password=$passwd'
+```
+> 三种登录方式在成功登录后反馈以下JSON结果:
 
 ```json
-[
-  {
-    "id": 1,
-    "name": "Fluffums",
-    "breed": "calico",
-    "fluffiness": 6,
-    "cuteness": 7
-  },
-  {
-    "id": 2,
-    "name": "Max",
-    "breed": "unknown",
-    "fluffiness": 5,
-    "cuteness": 10
-  }
-]
+{
+  "Id": "string",
+  "UserName": "string",
+  "Role": "string",
+  "Group": [
+    "string"
+  ],
+  "Thumbnail": "string",
+  "token": "string"
+}
 ```
 
-This endpoint retrieves all kittens.
+> 可根据需求反馈XML结果:
 
-### HTTP Request
+```xml
+<?xml version="1.0"?>
+<model.AuthUserInfo>
+  <Id>string</Id>
+  <UserName>string</UserName>
+  <Role>string</Role>
+  <Group>string</Group>
+  <Thumbnail>string</Thumbnail>
+  <token>string</token>
+</model.AuthUserInfo>
+```
 
-`GET http://example.com/api/kittens`
+### 通过用户名/密码登录 
+<aside class="notice">
+程序初始化时会产生一个默认的管理员账号：admin 密码：12345678 用于初始登录
+</aside>
 
-### Query Parameters
+`GET /login/account`
 
-Parameter | Default | Description
---------- | ------- | -----------
-include_cats | false | If set to true, the result will also include cats.
-available | true | If set to false, the result will include kittens that have already been adopted.
+### 参数
+
+Parameter |  Description
+--------- | ------- | 
+username |  用户注册名称.
+password |  密码.
+
+
+### 通过邮箱/密码登录 
+
+`GET /login/email`
+
+### 参数
+
+Parameter |  Description
+--------- | ------- | 
+emal |  用户注册邮箱.
+password |  密码.
+
+### 通过手机号/密码登录
+
+`GET /login/telphone`
+
+### 参数
+
+Parameter |  Description
+--------- | ------- | 
+telphone |  用户注册手机号.
+password |  密码.
 
 <aside class="success">
-Remember — a happy kitten is an authenticated kitten!
+必须先进行登录操作以获取到token，否则其它服务将不允许使用！！！
 </aside>
 
-## Get a Specific Kitten
 
-```ruby
-require 'kittn'
+# Users 
 
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.get(2)
-```
+## 用户信息存储操作服务 
 
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.get(2)
-```
+> users_valid
 
 ```shell
-curl "http://example.com/api/kittens/2"
-  -H "Authorization: meowmeowmeow"
+curl -X GET --header 'Accept: application/json' 
+'http://localhost:8000/users/users_valid?token=1&skip=1&limit=1'
 ```
 
-```javascript
-const kittn = require('kittn');
+> users_invalid
 
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.get(2);
+```shell
+curl -X GET --header 'Accept: application/json' 
+'http://localhost:8000/users/users_invalid?token=1&skip=1&limit=1'
+
 ```
 
-> The above command returns JSON structured like this:
+> name
+
+```shell
+curl -X GET --header 'Accept: application/json'
+ 'http://localhost:8000/users/name?token=1&username=1&skip=1&limit=1'
+``` 
+
+> user_id
+
+```shell
+curl -X GET --header 'Accept: text/plain' 
+'http://localhost:8000/users/user_id?token=1&user_id=1'
+
+```
+
+> user_ids
+
+```shell
+curl -X GET --header 'Accept: application/json' 
+'http://localhost:8000/users/user_ids?token=1&skip=1&limit=1&user_id=1'
+```
+
+> update
+
+```shell
+curl -X POST --header 'Content-Type: application/json' \
+--header 'Accept: text/plain' -d '{ \ 
+   "Id": "string", \ 
+   "RealName": "string", \ 
+   "UserName": "string", \ 
+   "Role": "string", \ 
+   "Groups": [ \ 
+     "string" \ 
+   ], \ 
+   "Email": "string", \ 
+   "Phone": "string", \ 
+   "TelPhone": "string", \ 
+   "Thumbnail": "string", \ 
+   "Profession": "string", \ 
+   "Gender": "string", \ 
+   "Enable": true, \ 
+   "Province": "string", \ 
+   "City": "string", \ 
+   "Institute": "string", \ 
+   "Specialty": "string", \ 
+   "Comment": "string", \ 
+   "CreateTime": "2017-08-01T11:58:30.361Z", \ 
+   "UpdateTime": "2017-08-01T11:58:30.361Z" \ 
+ }' 'http://localhost:8000/users/update?token=1'
+```
+
+> set_user_isvalid
+
+```shell
+curl -X POST --header 'Content-Type: application/json' 
+--header 'Accept: application/json' 
+'http://localhost:8000/users/set_user_isvalid?token=1&user_id=1&is_valid=1'
+```
+
+> changepwd
+
+```shell
+curl -X POST --header 'Content-Type: application/json' 
+--header 'Accept: text/plain' 
+'http://localhost:8000/users/changepwd?token=1&user_id=1&old_pwd=1&new_pwd=1'
+```
+
+> create
+
+```shell
+curl -X PUT --header 'Content-Type: application/json' \
+--header 'Accept: text/plain' -d '{ \ 
+   "Id": "string", \ 
+   "RealName": "string", \ 
+   "UserName": "string", \ 
+   "Role": "string", \ 
+   "Groups": [ \ 
+     "string" \ 
+   ], \ 
+   "Email": "string", \ 
+   "Phone": "string", \ 
+   "TelPhone": "string", \ 
+   "Thumbnail": "string", \ 
+   "Profession": "string", \ 
+   "Gender": "string", \ 
+   "Enable": true, \ 
+   "Province": "string", \ 
+   "City": "string", \ 
+   "Institute": "string", \ 
+   "Specialty": "string", \ 
+   "Comment": "string", \ 
+   "CreateTime": "2017-08-01T11:58:30.370Z", \ 
+   "UpdateTime": "2017-08-01T11:58:30.370Z" \ 
+ }' 'http://localhost:8000/users/create?token=1'
+ ```
+> delete 
+
+```shell
+curl -X DELETE --header 'Accept: application/json' 
+'http://localhost:8000/users/delete?token=1&user_id=1'
+```
+
+> 单个用户反馈结构
 
 ```json
 {
-  "id": 2,
-  "name": "Max",
-  "breed": "unknown",
-  "fluffiness": 5,
-  "cuteness": 10
+  "Id": "4c1b304240d29695808a3d064be7fc49",
+  "RealName": "ssl",
+  "UserName": "sunsl",
+  "Role": "admin",
+  "Groups": [],
+  "Email": "admin@live.com",
+  "Phone": "",
+  "TelPhone": "",
+  "Thumbnail": "",
+  "Profession": "",
+  "Gender": "",
+  "Enable": true,
+  "Province": "",
+  "City": "",
+  "Institute": "",
+  "Specialty": "",
+  "Comment": "",
+  "CreateTime": "2017-07-28T10:14:10.749+08:00",
+  "UpdateTime": "2017-07-28T10:14:10.76+08:00"
 }
 ```
 
-This endpoint retrieves a specific kitten.
-
-<aside class="warning">Inside HTML code blocks like this one, you can't use Markdown, so use <code>&lt;code&gt;</code> blocks to denote code.</aside>
-
-### HTTP Request
-
-`GET http://example.com/kittens/<ID>`
-
-### URL Parameters
-
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to retrieve
-
-## Delete a Specific Kitten
-
-```ruby
-require 'kittn'
-
-api = Kittn::APIClient.authorize!('meowmeowmeow')
-api.kittens.delete(2)
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+ <User>
+    <Id>4c1b304240d29695808a3d064be7fc49</Id>
+    <RealName>ssl</RealName>
+    <UserName>sunsl</UserName>
+    <PassWord>7c4a8d09ca3762af61e59520943dc26494f8941b</PassWord>
+    <Role>admin</Role>
+    <Email>sunsl@crtvu.edu.cn</Email>
+    <Phone></Phone>
+    <TelPhone></TelPhone>
+    <Thumbnail></Thumbnail>
+    <Profession></Profession>
+    <Gender></Gender>
+    <SecretKey>a3cbda8c404f3ae48031f0070ea0644b</SecretKey>
+    <Enable>true</Enable>
+    <Province></Province>
+    <City></City>
+    <Institute></Institute>
+    <Specialty></Specialty>
+    <Comment></Comment>
+    <CreateTime>2017-07-28T10:14:10.749+08:00</CreateTime>
+    <UpdateTime>2017-07-28T10:14:10.76+08:00</UpdateTime>
+ </User>
 ```
 
-```python
-import kittn
-
-api = kittn.authorize('meowmeowmeow')
-api.kittens.delete(2)
-```
-
-```shell
-curl "http://example.com/api/kittens/2"
-  -X DELETE
-  -H "Authorization: meowmeowmeow"
-```
-
-```javascript
-const kittn = require('kittn');
-
-let api = kittn.authorize('meowmeowmeow');
-let max = api.kittens.delete(2);
-```
-
-> The above command returns JSON structured like this:
+> 用户列表反馈结构：
 
 ```json
 {
-  "id": 2,
-  "deleted" : ":("
+  "User": [  <-用户结构数组
+    {
+      "Id": "4c1b304240d29695808a3d064be7fc49",
+      "RealName": "ssl",
+      "UserName": "sunsl",
+      "Role": "admin",
+      "Groups": [],
+      "Email": "admin@live.com",
+      "Phone": "",
+      "TelPhone": "",
+      "Thumbnail": "",
+      "Profession": "",
+      "Gender": "",
+      "Enable": true, <-是否有效
+      "Province": "",
+      "City": "",
+      "Institute": "",
+      "Specialty": "",
+      "Comment": "",
+      "CreateTime": "2017-07-28T10:14:10.749+08:00",
+      "UpdateTime": "2017-07-28T10:14:10.76+08:00"
+    }
+  ],
+  "RecordCount": 1 #数据集中用户数量
 }
 ```
 
-This endpoint retrieves a specific kitten.
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+ <Users>
+    <User>
+       <Id>4c1b304240d29695808a3d064be7fc49</Id>
+       <RealName>ssl</RealName>
+       <UserName>sunsl</UserName>
+       <PassWord>7c4a8d09ca3762af61e59520943dc26494f8941b</PassWord>
+       <Role>admin</Role>
+       <Email>sunsl@crtvu.edu.cn</Email>
+       <Phone></Phone>
+       <TelPhone></TelPhone>
+       <Thumbnail></Thumbnail>
+       <Profession></Profession>
+       <Gender></Gender>
+       <SecretKey>a3cbda8c404f3ae48031f0070ea0644b</SecretKey>
+       <Enable>true</Enable>
+       <Province></Province>
+       <City></City>
+       <Institute></Institute>
+       <Specialty></Specialty>
+       <Comment></Comment>
+       <CreateTime>2017-07-28T10:14:10.749+08:00</CreateTime>
+       <UpdateTime>2017-07-28T10:14:10.76+08:00</UpdateTime>
+    </User>
+    <RecordCount>1</RecordCount>
+ </Users>
+```
+
+
+###  获取所有用户信息(审核通过用户)
+
+### HTTP Request
+`GET /users/users_valid`
+
+
+Parameter|  Value | Description | ParameterType  | DataType
+--------- | ------- | --------- | -------  | ------- | 
+token | 不可为空 |token | query | string
+skip  | 可为空（默认为0） |页码  | query | string
+limit | 可为空 （默认为10）|每页显示行数 | query | string
+
+###  获取所有用户信息（包含未审核通过用户）
+
+### HTTP Request
+`GET /users/users_invalid`
+
+
+Parameter|  Value | Description | ParameterType  | DataType
+--------- | ------- | --------- | -------  | ------- | 
+token | 不可为空 |token | query | string
+skip  | 可为空（默认为0） |页码  | query | string
+limit | 可为空 （默认为10）|每页显示行数 | query | string
+
+### 用户名模糊查询
 
 ### HTTP Request
 
-`DELETE http://example.com/kittens/<ID>`
+`GET /users/name`
 
-### URL Parameters
+Parameter|  Value | Description | ParameterType  | DataType
+--------- | ------- | --------- | -------  | ------- | 
+token | 不可为空 |token | query | string
+username  | 不可为空 | 用户名  | query | string
+skip  | 可为空（默认为0） |页码  | query | string
+limit | 可为空 （默认为10）|每页显示行数 | query | string
 
-Parameter | Description
---------- | -----------
-ID | The ID of the kitten to delete
+###  获取指定用户信息
 
+### HTTP Request
+
+`GET /users/user_id`
+
+Parameter|  Value | Description | ParameterType  | DataType
+--------- | ------- | --------- | -------  | ------- | 
+token | 不可为空 |token | query | string
+user_id  | 不可为空 | 用户编码 | query | string
+
+###  获取用户信息
+
+### HTTP Request
+
+`GET /users/user_ids`
+
+Parameter|  Value | Description | ParameterType  | DataType
+--------- | ------- | --------- | -------  | ------- | 
+token | 不可为空 |token | query | string
+user_ids  | 不可为空 | 用户编码组(用户id以','隔开) | query | string
+skip  | 可为空（默认为0） |页码  | query | string
+limit | 可为空 （默认为10）|每页显示行数 | query | string
+
+###  更新用户
+
+### HTTP Request
+
+`POST /users/update`
+
+
+Parameter|  Value | Description | ParameterType  | DataType
+--------- | ------- | --------- | -------  | ------- | 
+token | 不可为空 |token | query | string
+body  | 不可为空 |结构体 | body  | model.User
+
+###  用户有效性审核
+
+### HTTP Request
+
+`POST /users/set_user_isvalid`
+
+Parameter|  Value | Description | ParameterType  | DataType
+--------- | ------- | --------- | -------  | ------- | 
+token | 不可为空 |token | query | string
+user_id  | 不可为空 | 用户编码 | query | string
+is_valid  | 0:有效 1:无效 | 是否通过审核 | query | string
+
+###  更新密码
+
+### HTTP Request
+
+`POST /users/changepwd`
+
+Parameter|  Value | Description | ParameterType  | DataType
+--------- | ------- | --------- | -------  | ------- | 
+token | 不可为空 |token | query | string
+user_id  | 不可为空 | 用户编码 | query | string
+old_pwd | 不可为空 | 旧密码（明文） | query | string
+new_pwd  | 不可为空 | 新密码（明文） | query | string
+
+### 创建用户,默认用户密码（111111）
+
+### HTTP Request
+
+`PUT /users/create`
+
+Parameter|  Value | Description | ParameterType  | DataType
+--------- | ------- | --------- | -------  | ------- | 
+token | 不可为空 |token | query | string
+body  | 不可为空 |结构体 | body  | model.User
+
+###  删除用户
+
+### HTTP Request
+
+`DELETE /users/delete`
+
+Parameter|  Value | Description | ParameterType  | DataType
+--------- | ------- | --------- | -------  | ------- | 
+token | 不可为空 |token | query | string
+user_id  | 不可为空 | 用户编码 | query | string
