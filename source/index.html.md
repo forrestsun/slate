@@ -14,7 +14,7 @@ includes:
 search: true
 ---
 
-# resservice 简介
+# 资源库接口服务（resservice） 简介
 
 resservice采用Restful形式提供友好接口。利用Swagger提供在线实时测试。
 
